@@ -14,6 +14,10 @@ def main():
 	if token:
 		# Create spotify object
 		sp = spotipy.Spotify(auth=token)
+		# Get IDs of all artists in the text file
+		artistIDs = get_artist_ids(sp, artists)
+		# Grab list of top 5 songs for each artist
+		songIDs = get_song_IDs(sp, artistIDs)
 		# Check to see if Bonnaroo playlist already exists
 		userPlaylists = get_user_playlist_names(sp)
 		if playlist_name not in userPlaylists:
@@ -21,10 +25,6 @@ def main():
 			playlist = sp.user_playlist_create(username,playlist_name)
 		else:
 			print("Bonnaroo Playlist 2019 has already been created :)")
-		# Get IDs of all artists in the text file
-		artistIDs = get_artist_ids(sp, artists)
-		# Grab list of top 5 songs for each artist
-		songIDs = get_song_IDs(sp, artistIDs)
 		# Adds top 5 songs for each artist to playlist
 		add_track(sp, playlist, songIDs)
 		
