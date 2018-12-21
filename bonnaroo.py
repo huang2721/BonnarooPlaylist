@@ -23,10 +23,10 @@ def main():
 		if playlist_name not in userPlaylists:
 			# Create playlist
 			playlist = sp.user_playlist_create(username,playlist_name)
+			add_track(sp, playlist, songIDs)
 		else:
 			print("Bonnaroo Playlist 2019 has already been created :)")
 		# Adds top 5 songs for each artist to playlist
-		add_track(sp, playlist, songIDs)
 		
 	else:
 		print("Can't get token for", username)
