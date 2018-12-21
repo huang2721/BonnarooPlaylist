@@ -14,10 +14,13 @@ def main():
 		sp = spotipy.Spotify(auth=token)
 		sp.trace=False
 		public = True
-		playlists = sp.user_playlist_create(username,playlist_name,public)
-		print(playlists)
-
-
+		playlist = sp.user_playlist_create(username,playlist_name,public)
+		id=playlist['id']
+		artistID=[]
+		for artist in artists:
+			temp = sp.search(artist,1,0,"artist","US")
+			artistID.append(temp['artists']['items'][0]['id'])
+		print(artistID)
 
 
 if __name__ == '__main__':
