@@ -25,7 +25,7 @@ def main():
 		print("Can't get token for", username)
 
 def get_artist_ids(sp, artists):
-	artistIDs = [sp.search(artist,1,0,"artist",)['artists']['items'][0]['id'] for artist in artists]
+	artistIDs = [sp.search(artist,1,0,"artist")['artists']['items'][0]['id'] for artist in artists]
 	return artistIDs
 
 if __name__ == '__main__':
