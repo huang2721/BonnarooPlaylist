@@ -7,6 +7,8 @@ def main():
 	# Get artist names in list from file
 	artists = [artist for artist in file]
 	playlist_name = "Bonnaroo Playlist 2019"
+	# Check to see if Bonnaroo playlist already exists
+	userPlaylists = get_user_playlist_names(sp)
 	# Set up token verification info
 	username = sys.argv[1]
 	scope = "playlist-modify-public"
@@ -14,8 +16,11 @@ def main():
 	if token:
 		# Create spotify object
 		sp = spotipy.Spotify(auth=token)
-		# Create playlist
-		playlist = sp.user_playlist_create(username,playlist_name)
+		if playlist['name'] not in userPlaylists:
+			# Create playlist
+			playlist = sp.user_playlist_create(username,playlist_name)
+		else:
+			print("Bonnaroo Playlist 2019 has already been created :)")
 		# Get IDs of all artists in the text file
 		artistIDs = get_artist_ids(sp, artists)
 		# Grab list of top 5 songs for each artist
@@ -39,12 +44,8 @@ def get_song_IDs(sp, artistIDs):
 	return songIDs
 
 def add_track(sp, playlist, songIDs):
-	# Check to see if Bonnaroo playlist already exists
-	userPlaylists = get_user_playlist_names(sp)
-	if playlist['name'] not in userPlaylists:
-		sp.user_playlist_add_tracks(username, playlist['id'], songIDs)
-	else:
-		print("Bonnaroo Playlist 2019 has already been created :)")
+	sp.user_playlist_add_tracks(username, playlist['id'], songIDs)
+	
 
 if __name__ == '__main__':
 	main()
