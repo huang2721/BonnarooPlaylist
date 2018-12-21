@@ -15,6 +15,7 @@ def main():
 		sp.trace=False
 		playlist = sp.user_playlist_create(username, playlist_name)
 		print(playlist)
+		print(playlists)
 
 
 if __name__ == '__main__':
