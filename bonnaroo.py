@@ -27,6 +27,8 @@ def main():
 			add_track(sp, username, playlist, songIDs)
 		else:
 			print("Bonnaroo Playlist 2019 has already been created :)")
+		
+		
 	else:
 		print("Can't get token for", username)
 
@@ -39,11 +41,8 @@ def get_artist_ids(sp, artists):
 	return artistIDs
 
 def get_user_playlist_names(sp):
-	playlists = sp.current_user_playlists()
-	userPlaylists = {}
-	for i in range(len(playlists)):
-		userPlaylists[playlists['items'][i]['name']] = playlists['items'][i]['id']
-	return userPlaylists
+	userPlaylists = sp.current_user_playlists()
+	return [userPlaylists['items'][i]['name'] for i in range(len(userPlaylists['items']))]
 
 def get_song_IDs(sp, artistIDs):
 	songIDs = [sp.artist_top_tracks(artistID)['tracks'][j]['id'] for artistID in artistIDs for j in range(5)]
