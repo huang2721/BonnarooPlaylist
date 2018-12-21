@@ -13,7 +13,8 @@ def main():
 	if token:
 		sp = spotipy.Spotify(auth=token)
 		sp.trace=False
-		playlists = sp.user_playlist_create(username, playlist_name,True,playlist_description)
+		public = True
+		playlists = sp.user_playlist_create(username,playlist_name,public)
 		print(playlists)
 
 
