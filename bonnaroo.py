@@ -9,11 +9,13 @@ def main():
 	playlist_name = "Bonnaroo's 2019 Lineup Top 5"
 	# Set up token verification info
 	username = sys.argv[1]
+	token = util.oauth2.SpotifyClientCredentials(client_id='52e761dfa7e542b69f9250cb7d243bca', client_secret='30de97fa9ae24103ac067dcf1683dce2')
+	cache_token = token.get_access_token()
 	scope = "playlist-modify-public"
-	token = util.prompt_for_user_token(username,scope,client_id='52e761dfa7e542b69f9250cb7d243bca',client_secret='30de97fa9ae24103ac067dcf1683dce2',redirect_uri='http://startbackpacking.org')
+	#token = util.prompt_for_user_token(username,scope,client_id='52e761dfa7e542b69f9250cb7d243bca',client_secret='30de97fa9ae24103ac067dcf1683dce2',redirect_uri='http://startbackpacking.org')
 	if token:
 		# Create spotify object
-		sp = spotipy.Spotify(auth=token)
+		sp = spotipy.Spotify(cache_token)
 		# Get IDs of all artists in the text file
 		artistIDs = get_artist_ids(sp, artists)
 		# Grab list of top 5 songs for each artist (No remixes for certain genres)
@@ -36,7 +38,7 @@ def main():
 		playlist = sp.user_playlist_create(username, playlist_name)
 		# Adds top 5 songs for each artist to playlist
 		add_track(sp, username, playlist, songIDs)
-	
+
 	else:
 		print("Can't get token for", username)
 
@@ -65,6 +67,6 @@ def get_song_IDs(sp, artistIDs, remixesAllowed):
 
 def add_track(sp, username, playlist, songIDs):
 	sp.user_playlist_add_tracks(username, playlist['id'], songIDs)
-	
+
 if __name__ == '__main__':
 	main()
