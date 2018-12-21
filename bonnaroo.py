@@ -41,8 +41,11 @@ def get_artist_ids(sp, artists):
 	return artistIDs
 
 def get_user_playlist_names(sp):
-	userPlaylists = sp.current_user_playlists()
-	return [userPlaylists['items'][i]['name'] for i in range(len(userPlaylists['items']))]
+	playlists = sp.current_user_playlists()
+	userPlaylists = {}
+	for i in range(len(playlists)):
+		userPlaylists[playlists['items'][i]['name']] = playlists['items'][i]['id']
+	return userPlaylists
 
 def get_song_IDs(sp, artistIDs):
 	songIDs = [sp.artist_top_tracks(artistID)['tracks'][j]['id'] for artistID in artistIDs for j in range(5)]
