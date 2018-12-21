@@ -11,9 +11,10 @@ def main():
 	if token:
 		sp = spotipy.Spotify(auth=token)
 		print (token)
-
-
-
+	playlist_description = "Barns, beats, Bonnaroo. Get ready for 2019 with these tunes as hot as the Tennessee sun!"
+	if token:
+		sp = spotipy.Spotify(auth=token)
+		sp.user_playlist_create(username, playlist_name,playlist_description)
 
 if __name__ == '__main__':
 	main()
