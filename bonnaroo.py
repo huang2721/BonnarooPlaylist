@@ -21,7 +21,8 @@ def main():
 			temp = sp.search(artist,1,0,"artist","US")
 			artistID.append(temp['artists']['items'][0]['id'])
 		print(artistID)
-
+	else:
+		print("Can't get token for", username)
 
 if __name__ == '__main__':
 	main()
