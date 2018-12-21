@@ -1,6 +1,6 @@
 import spotipy
 import sys
-
+#Michael's Comment
 def main():
 	file = open(sys.argv[1], "r")
 	print(file.read())
