@@ -7,8 +7,10 @@ def main():
 	file = open(sys.argv[1], "r")
 	artists = [artist for artist in file]
 	playlist_name = "Bonnaroo Playlist 2019"
+	playlist_description = "Barns, beats, Bonnaroo. Get ready for 2019 with these tunes as hot as the Tennessee sun!"
 	if token:
 		sp = spotipy.Spotify(auth=token)
+		sp.user_playlist_create(username, playlist_name,playlist_description)
 
 
 
