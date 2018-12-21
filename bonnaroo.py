@@ -33,7 +33,11 @@ def main():
 		print("Can't get token for", username)
 
 def get_artist_ids(sp, artists):
-	artistIDs = [sp.search(artist,1,0,"artist")['artists']['items'][0]['id'] for artist in artists]
+	artistIDs = {}
+	for artist in artists:
+		artistID = sp.search(artist,1,0,"artist")['artists']['items'][0]['id']
+		artistGenre = sp.search(artist,1,0,"artist")['artists']['items'][0]['genres']
+	artistIDs[artistID] = artistGenre
 	return artistIDs
 
 def get_user_playlist_names(sp):
@@ -41,7 +45,7 @@ def get_user_playlist_names(sp):
 	return [userPlaylists['items'][i]['name'] for i in range(len(userPlaylists['items']))]
 
 def get_song_IDs(sp, artistIDs):
-	songIDs = [sp.artist_top_tracks(artistIDs[i])['tracks'][j]['id'] for i in range(len(artistIDs)) for j in range(5)]
+	songIDs = [sp.artist_top_tracks(artistID)['tracks'][j]['id'] for artistID in artistIDs for j in range(5)]
 	return songIDs
 
 def add_track(sp, username, playlist, songIDs):
