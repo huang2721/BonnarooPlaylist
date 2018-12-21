@@ -25,7 +25,7 @@ def main():
 		add_track(sp, username, playlist, songIDs)
 		print("Playlist was created successfully :) <3")
 	else:
-		print("Can't get token for", username)
+		print("Can't get token for ", username)
 
 def get_artist_ids(sp, artists):
 	artistIDs = {}
@@ -42,6 +42,9 @@ def get_song_IDs(sp, artistIDs, remixesAllowed):
 		print(artistIDs[artistID])
 		for j in range(10):
 			songIDs.append(sp.artist_top_tracks(artistID)['tracks'][j]['id'])
+			added += 1
+			if added >= 5:
+				break
 	return songIDs
 
 def add_track(sp, username, playlist, songIDs):
