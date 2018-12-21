@@ -14,26 +14,21 @@ def main():
 	if token:
 		# Create spotify object
 		sp = spotipy.Spotify(auth=token)
-		# Check to see if Bonnaroo playlist already exists
-		userPlaylists = get_user_playlist_names(sp)
-		if playlist_name not in userPlaylists:
-			# Create playlist
-			playlist = sp.user_playlist_create(username,playlist_name)
-			# Get IDs of all artists in the text file
-			artistIDs = get_artist_ids(sp, artists)
-			# Grab top 5 songs and add them to playlist
-			songIDs = get_song_IDs(sp, artistIDs)
-			sp.user_playlist_add_tracks(username, playlist['id'], songIDs)
-		else:
-			print("Bonnaroo Playlist 2019 has already been created :)")
-
+		# Create playlist
+		playlist = sp.user_playlist_create(username,playlist_name)
+		# Get IDs of all artists in the text file
+		artistIDs = get_artist_ids(sp, artists)
+		# Grab list of top 5 songs for each artist
+		songIDs = get_song_IDs(sp, artistIDs)
+		# Adds top 5 songs for each artist to playlist
+		add_track(sp, playlist, songIDs)
+		
 	else:
 		print("Can't get token for", username)
 
 def get_artist_ids(sp, artists):
 	artistIDs = [sp.search(artist,1,0,"artist")['artists']['items'][0]['id'] for artist in artists]
 	return artistIDs
-
 
 def get_user_playlist_names(sp):
 	userPlaylists = sp.current_user_playlists()
@@ -42,6 +37,14 @@ def get_user_playlist_names(sp):
 def get_song_IDs(sp, artistIDs):
 	songIDs = [sp.artist_top_tracks(artistIDs[i])['tracks'][j]['id'] for i in range(len(artistIDs)) for j in range(5)]
 	return songIDs
+
+def add_track(sp, playlist, songIDs):
+	# Check to see if Bonnaroo playlist already exists
+	userPlaylists = get_user_playlist_names(sp)
+	if playlist['name'] not in userPlaylists:
+		sp.user_playlist_add_tracks(username, playlist['id'], songIDs)
+	else:
+		print("Bonnaroo Playlist 2019 has already been created :)")
 
 if __name__ == '__main__':
 	main()
