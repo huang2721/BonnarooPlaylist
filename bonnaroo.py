@@ -27,8 +27,6 @@ def main():
 			add_track(sp, username, playlist, songIDs)
 		else:
 			print("Bonnaroo Playlist 2019 has already been created :)")
-		
-		
 	else:
 		print("Can't get token for", username)
 
