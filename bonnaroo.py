@@ -17,7 +17,7 @@ def main():
 		# Get IDs of all artists in the text file
 		artistIDs = get_artist_ids(sp, artists)
 		# Grab list of top 5 songs for each artist (No remixes for certain genres)
-		remixesAllowed = []
+		remixesAllowed = ['house','dub','trance','breakbeat','bass','techno','edm']
 		songIDs = get_song_IDs(sp, artistIDs, remixesAllowed)
 		# Create playlist
 		playlist = sp.user_playlist_create(username, playlist_name)
