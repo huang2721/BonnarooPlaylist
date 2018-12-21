@@ -22,10 +22,11 @@ def main():
 			# Get IDs of all artists in the text file
 			artistIDs = get_artist_ids(sp, artists)
 			# Grab top 5 songs and add them to playlist
-			songIDs = [sp.artist_top_tracks(artistIDs[i])['tracks'][j]['id'] for i in range(len(artistIDs)) for j in range(5)]
+			songIDs = get_song_IDs(sp, artistIDs)
 			sp.user_playlist_add_tracks(username, playlist['id'], songIDs)
 		else:
 			print("Bonnaroo Playlist 2019 has already been created :)")
+
 	else:
 		print("Can't get token for", username)
 
@@ -37,6 +38,10 @@ def get_artist_ids(sp, artists):
 def get_user_playlist_names(sp):
 	userPlaylists = sp.current_user_playlists()
 	return [userPlaylists['items'][i]['name'] for i in range(len(userPlaylists['items']))]
+
+def get_song_IDs(sp, artistIDs):
+	songIDs = [sp.artist_top_tracks(artistIDs[i])['tracks'][j]['id'] for i in range(len(artistIDs)) for j in range(5)]
+	return songIDs
 
 if __name__ == '__main__':
 	main()
