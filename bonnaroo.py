@@ -6,7 +6,7 @@ def main():
 	file = open("artists.txt", "r")
 	# Get artist names in list from file
 	artists = [artist for artist in file]
-	playlist_name = "Bonnaroo Playlist 2019"
+	playlist_name = "Bonnaroo's 2019 Lineup Top 5"
 	# Set up token verification info
 	username = sys.argv[1]
 	scope = "playlist-modify-public"
