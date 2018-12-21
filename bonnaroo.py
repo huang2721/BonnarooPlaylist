@@ -2,8 +2,6 @@ import spotipy
 import sys
 import spotipy.util as util
 
-
-
 def main():
 	file = open(sys.argv[1], "r")
 	artists = [artist for artist in file]
@@ -14,10 +12,9 @@ def main():
 	token = util.prompt_for_user_token(username,scope,client_id='52e761dfa7e542b69f9250cb7d243bca',client_secret='30de97fa9ae24103ac067dcf1683dce2',redirect_uri='http://startbackpacking.org')
 	if token:
 		sp = spotipy.Spotify(auth=token)
-		playlists = sp.user_playlist_create(username, playlist_name, playlist_description)
-		print(playlists)
-
-
+		sp.trace=False
+		playlist = sp.user_playlist_create(username, playlist_name)
+		print(playlist)
 
 
 if __name__ == '__main__':
