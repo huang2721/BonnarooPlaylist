@@ -21,26 +21,17 @@ def main():
 		# Grab list of top 5 songs for each artist (No remixes for certain genres)
 		remixesAllowed = []
 		songIDs = get_song_IDs(sp, artistIDs, remixesAllowed)
-
-		"""
-		# Check to see if Bonnaroo playlist already exists
-		userPlaylists = get_user_playlist_names(sp)
-		if playlist_name not in userPlaylists:
-			# Create playlist
-			playlist = sp.user_playlist_create(username,playlist_name)
-			# Adds top 5 songs for each artist to playlist
-			add_track(sp, username, playlist, songIDs)
-		else:
-			print("Bonnaroo Playlist 2019 has already been created :)")
-			"""
-
 		# Create playlist
 		playlist = sp.user_playlist_create(username, playlist_name)
 		# Adds top 5 songs for each artist to playlist
 		add_track(sp, username, playlist, songIDs)
+<<<<<<< HEAD
 
+=======
+		print("Playlist was created successfully :) <3")
+>>>>>>> f78fe0077ed0bce6f2439692d996753817ac8447
 	else:
-		print("Can't get token for", username)
+		print("Can't get token for ", username)
 
 def get_artist_ids(sp, artists):
 	artistIDs = {}
@@ -50,12 +41,6 @@ def get_artist_ids(sp, artists):
 		artistIDs[artistID] = artistGenre
 	return artistIDs
 
-"""
-def get_user_playlist_names(sp):
-	userPlaylists = sp.current_user_playlists()
-	return [userPlaylists['items'][i]['name'] for i in range(len(userPlaylists['items']))]
-	"""
-
 def get_song_IDs(sp, artistIDs, remixesAllowed):
 	songIDs = []
 	for artistID in artistIDs:
@@ -63,6 +48,9 @@ def get_song_IDs(sp, artistIDs, remixesAllowed):
 		print(artistIDs[artistID])
 		for j in range(10):
 			songIDs.append(sp.artist_top_tracks(artistID)['tracks'][j]['id'])
+			added += 1
+			if added >= 5:
+				break
 	return songIDs
 
 def add_track(sp, username, playlist, songIDs):
