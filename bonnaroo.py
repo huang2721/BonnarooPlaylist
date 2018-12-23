@@ -22,7 +22,7 @@ def main():
 		# Create playlist
 		playlist = sp.user_playlist_create(username, playlist_name)
 		# Adds top 5 songs for each artist to playlist
-		add_track(sp, username, playlist, songIDs)
+		add_tracks(sp, username, playlist, songIDs)
 		print("Playlist was created successfully :) <3")
 	else:
 		print("Can't get token for ", username)
@@ -33,22 +33,50 @@ def get_artist_ids(sp, artists):
 		artistID = sp.search(artist,1,0,"artist")['artists']['items'][0]['id']
 		artistGenre = sp.search(artist,1,0,"artist")['artists']['items'][0]['genres']
 		artistIDs[artistID] = artistGenre
+		print(artistIDs[artistID])
 	return artistIDs
 
 def get_song_IDs(sp, artistIDs, remixesAllowed):
 	songIDs = []
 	for artistID in artistIDs:
-		added = 0
-		print(artistIDs[artistID])
-		for j in range(10):
-			songIDs.append(sp.artist_top_tracks(artistID)['tracks'][j]['id'])
-			added += 1
-			if added >= 5:
-				break
+		if allow_remixes(artistIDs[artistID], remixesAllowed):
+			currentSongs = get_all_songs(sp, artistID)
+		else:
+			currentSongs = get_songs_no_remixes(sp, artistID)
+		for song in currentSongs:
+			songIDs.append(song)
 	return songIDs
 
-def add_track(sp, username, playlist, songIDs):
+def get_all_songs(sp, artistID):
+	songs = []
+	for i in range(5):
+		songs.append(sp.artist_top_tracks(artistID)['tracks'][i]['id'])
+	return songs
+
+def get_songs_no_remixes(sp, artistID):
+	allSongs = {}
+	for i in range(10):
+		allSongs[sp.artist_top_tracks(artistID)['tracks'][i]['id']] = [sp.artist_top_tracks(artistID)['tracks'][i]['name']]
+	noRemixes = []
+	added = 0
+	for song in	allSongs:
+		if added == 5:
+			break 
+		if 'remix' not in allSongs[song][0].lower() and 'edit' not in allSongs[song][0].lower():
+			noRemixes.append(song)
+			added += 1
+	return noRemixes
+
+
+def add_tracks(sp, username, playlist, songIDs):
 	sp.user_playlist_add_tracks(username, playlist['id'], songIDs)
+
+def allow_remixes(genres, remixesAllowed):
+	for genre in genres:
+		for remixGenre in remixesAllowed:
+			if remixGenre in genre:
+				return True
+	return False
 
 if __name__ == '__main__':
 	main()
