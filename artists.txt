@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Childish Gambino
 Janelle Monae
 The 1975
@@ -163,3 +164,12 @@ Social house
 Ocho Ojos
 Razerbumbs
 Tara Brooks
+=======
+ODESZA
+Queen
+Daft Punk
+Hot Chip
+LCD Soundsystem
+Lane 8
+Hayden James
+>>>>>>> 44ab14d56870602f57ba0daaa0f091de614d1b07
