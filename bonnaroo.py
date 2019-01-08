@@ -6,7 +6,7 @@ def main():
 	file = open("artists.txt", "r")
 	# Get artist names in list from file
 	artists = [artist for artist in file]
-	playlist_name = "Bonnaroo's 2019 Lineup Top 5"
+	playlist_name = "Bonnaroo 2019"
 	# Set up token verification info
 	username = sys.argv[1]
 	scope = "playlist-modify-public"
@@ -30,10 +30,13 @@ def main():
 def get_artist_ids(sp, artists):
 	artistIDs = {}
 	for artist in artists:
-		artistID = sp.search(artist,1,0,"artist")['artists']['items'][0]['id']
-		artistGenre = sp.search(artist,1,0,"artist")['artists']['items'][0]['genres']
-		artistIDs[artistID] = artistGenre
-		print(artistIDs[artistID])
+		if (len(sp.search(artist,1,0,"artist")['artists']['items']) == 0 ):
+			print("No search results for", artist, end='')
+			print("They either aren't on spotify, there was a typo, or some special character that spotify doesn't like\n\n\n")
+		else :
+			artistID = sp.search(artist,1,0,"artist")['artists']['items'][0]['id']
+			artistGenre = sp.search(artist,1,0,"artist")['artists']['items'][0]['genres']
+			artistIDs[artistID] = artistGenre
 	return artistIDs
 
 def get_song_IDs(sp, artistIDs, remixesAllowed):
@@ -55,8 +58,10 @@ def get_all_songs(sp, artistID):
 
 def get_songs_no_remixes(sp, artistID):
 	allSongs = {}
+	tracks = sp.artist_top_tracks(artistID)['tracks']
 	for i in range(10):
-		allSongs[sp.artist_top_tracks(artistID)['tracks'][i]['id']] = [sp.artist_top_tracks(artistID)['tracks'][i]['name']]
+		if (i < len(tracks)):
+			allSongs[tracks[i]['id']] = [tracks[i]['name']]
 	noRemixes = []
 	added = 0
 	for song in	allSongs:
@@ -69,7 +74,8 @@ def get_songs_no_remixes(sp, artistID):
 
 
 def add_tracks(sp, username, playlist, songIDs):
-	sp.user_playlist_add_tracks(username, playlist['id'], songIDs)
+	for song in songIDs:
+		sp.user_playlist_add_tracks(username, playlist['id'], [song])
 
 def allow_remixes(genres, remixesAllowed):
 	for genre in genres:
